@@ -1,14 +1,19 @@
 import logo from './logo.svg';
 import './App.css';
-import {Button} from '@material-ui/core'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from "react-router-dom";
+import Home  from './routes/Home.js';
 
 function App() {
   return (
-    <div className="App">
-      <h1>Hola</h1>
-      <Button>Yow</Button>
-
-    </div>
+    <Router>
+      <Route path="/"> 
+      <Home/>
+      </Route>
+    </Router>
   );
 }
 

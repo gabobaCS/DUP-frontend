@@ -1,0 +1,44 @@
+    useEffect(() => {
+        const formData = new FormData();
+        formData.append("email_usuario", "gabrielbacar@gmail.com");
+        formData.append("estado", "encontrado");
+        formData.append("fecha_publicado", "2020-12-22T23:49:00Z");
+        formData.append("longitud", "41.403380");
+        formData.append("latitud", "2.174030");
+        formData.append("fecha_perdido", "2020-12-22");
+        formData.append("descripcion_lugar", "Por multiplaza");
+        formData.append("descripcion_animal", "Raza maltes con pelaje blanco");
+        formData.append("nombre_animal", "''");
+        formData.append("raza", "Maltés");
+        formData.append("microchip", 1231231231);
+        formData.append("imagen_1", '');
+        formData.append("imagen_2", '');
+        formData.append("imagen_3", '');
+        formData.append("imagen_4", '');
+        formData.append("imagen_5", '');
+        formData.append("nombre_contacto", "Gabriel");
+        formData.append("email_contacto", "gabrielbacar@gmail.com");
+        formData.append("numero_contacto", "62907250");
+
+        
+
+
+        fetch("https://dupbackend.herokuapp.com/animales/", { 
+      
+            // Adding method type 
+            method: "POST", 
+              
+            // Adding body or contents to send 
+            body: formData, 
+              
+            // Adding headers to the request 
+
+        }) 
+          
+        // Converting to JSON 
+        .then(response => response.json()) 
+          
+        // Displaying results to console 
+        .then(json => console.log(json)); 
+
+    }, []);
