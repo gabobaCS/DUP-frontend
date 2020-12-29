@@ -91,7 +91,7 @@ function Map() {
   return (
     <LoadScript
     //   googleMapsApiKey='' 
-      googleMapsApiKey="AIzaSyAX2Q4P8ybu0nGQPRGBt7dYiB92XiQ160A"
+      googleMapsApiKey={process.env.REACT_APP_API_MAPS_KEY}
       libraries={librerias}
     >
       <GoogleMap
