@@ -3,7 +3,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import { makeStyles } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import './Header.css';
 import {ReactComponent as LogoBig} from '../images/DUPLogo.svg';
 import {ReactComponent as LogoSmall} from '../images/DUPLogoSmall.svg';
 import PublishIcon from '@material-ui/icons/Publish';

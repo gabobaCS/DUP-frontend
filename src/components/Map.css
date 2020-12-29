@@ -1,0 +1,31 @@
+.autocomplete-input{
+
+    margin: 60px 10px 0 10px;
+    border: 1px solid transparent;
+    width: 100%;
+    height: 38px;
+    padding: 0 12px;
+    border-radius: 3px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    font-size: 14px;
+    outline: none;
+    text-overflow: ellipses;
+    position: relative;
+}
+
+@media (min-width: 960px) {
+    .autocomplete-input{
+        width: 50vw;
+        margin: 10px 0;
+
+    }
+}
+
+@media (min-width: 1280px) {
+    .autocomplete-input{
+        width: 60vw;
+        margin: 10px 0;
+
+    }
+}
+
