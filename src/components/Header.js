@@ -7,11 +7,13 @@ import {ReactComponent as LogoBig} from '../images/DUPLogo.svg';
 import {ReactComponent as LogoSmall} from '../images/DUPLogoSmall.svg';
 import PublishIcon from '@material-ui/icons/Publish';
 import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
 import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles({
     root: {
-        backgroundColor: "#3BD7FF"
+        backgroundColor: "#3BD7FF",
+        fontSize: '50px'
     },
     menu:{
         display: "flex",
@@ -39,8 +41,11 @@ function Header(){
                 <Toolbar className={classes.menu}>
                         <LogoSmall id="logo-header" onClick={() => history.push('/')} className={classes.logoHeader} style={{display: matches?"none":''}}></LogoSmall>
                         <LogoBig style={{flex:1}} onClick={() => history.push('/')} id="logo-header"  className={classes.logoHeader} style={{display: matches?'':"none"}}></LogoBig>
-                        <IconButton className={classes.button}>
-                            <PublishIcon className={classes.menu} style={{fontSize:"50px"}}/>
+                        <IconButton className={classes.button} style={{ backgroundColor: 'transparent' }}>
+                            <PublishIcon className={classes.menu} style={{fontSize:"25px"}}/>
+                            <Typography variant='button' style={{display: matches?'':"none", fontSize:"20px"}}>
+                                Publicar
+                            </Typography>
                         </IconButton>
                 </Toolbar>
             </AppBar>

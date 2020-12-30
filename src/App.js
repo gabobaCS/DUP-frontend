@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import './App.css';
 import {
   Switch,
@@ -9,11 +9,22 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 
 
 function App() {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    fetch('https://dupbackend.herokuapp.com/animales', {method: 'GET'})
+    .then(res => res.json())
+    .then((data) => {
+      setData(data);
+    })
+
+  }, []);
+
   return (
     <React.Fragment>
       <CssBaseline />
       <Route path="/"> 
-        <Home/>
+        <Home data={data}/>
       </Route>
     </React.Fragment>
 

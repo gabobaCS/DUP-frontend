@@ -6,17 +6,16 @@ import './Map.css';
 
 const librerias = ["places"];
 
-function Map() {
+function Map(props) {
 
     const [center, setCenter] = useState({lat:9.041430,lng: -79.433601});
-    const [data, setData] = useState(null);
     const [currentMarker, setCurrentMarker] = useState();
     const [showWindow, setShowWindow] = useState(false);
     const [autocomplete, setAutocomplete] = useState();
 
     //Usado para el Mapa.
     const containerStyle = {
-        width: '100vw',
+        width: '100%',
         height: '80vh',
     };
 
@@ -37,29 +36,22 @@ function Map() {
     }
 
     useEffect(() => {
-      if(navigator.geolocation){
-      navigator.permissions
-      .query({ name: "geolocation" })
-      .then(function(result){
-        if (result.state === "granted") {
-          navigator.geolocation.getCurrentPosition(success);
+        if(navigator.geolocation){
+            navigator.permissions
+            .query({ name: "geolocation" })
+            .then(function(result){
+                if (result.state === "granted") {
+                navigator.geolocation.getCurrentPosition(success);
 
-        } else if (result.state === "prompt") {
-          navigator.geolocation.getCurrentPosition(success, errors, options);
+                } else if (result.state === "prompt") {
+                navigator.geolocation.getCurrentPosition(success, errors, options);
 
-        } else if (result.state === "denied") {
-          //If denied then you have to show instructions to enable location.
-          //TODO
-        }
-      })
-    }
-
-    fetch('https://dupbackend.herokuapp.com/animales', {method: 'GET'})
-    .then(res => res.json())
-    .then((data) => {
-      setData(data);
-    })
-    
+                } else if (result.state === "denied") {
+                //If denied then you have to show instructions to enable location.
+                //TODO
+                }
+            })
+        }   
     }, []);
 
     const onClickMarker = animal => e => {
@@ -115,7 +107,7 @@ function Map() {
                     </div>
                 </Autocomplete>
 
-                {data != null && data.map(animal => (
+                {props.data != null && props.data.map(animal => (
                     <Marker
                     icon={animal.estado == 'encontrado' ? roomYellow : roomRed}
                     position={{lat: parseFloat(animal.latitud), lng: parseFloat(animal.longitud)}}

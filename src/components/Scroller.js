@@ -12,7 +12,7 @@ const useStyles = makeStyles({
     scrollerContainer: {
         color: '#3BD7FF',
         height: '100%',
-        width: '100vw',
+        width: '100%',
         margin: '0',
         padding: '0'
     },
@@ -30,8 +30,6 @@ export default function Scroller(){
             <IconButton className={classes.marginPadding} style={{ backgroundColor: 'transparent' }} color="inherit">
                 <ExpandMoreIcon className={classes.expandIcon}/>
             </IconButton>
-
-
         </Box>
     );
 }
