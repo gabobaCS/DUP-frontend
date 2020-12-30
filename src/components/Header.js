@@ -7,6 +7,7 @@ import {ReactComponent as LogoBig} from '../images/DUPLogo.svg';
 import {ReactComponent as LogoSmall} from '../images/DUPLogoSmall.svg';
 import PublishIcon from '@material-ui/icons/Publish';
 import IconButton from '@material-ui/core/IconButton';
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles({
     root: {
@@ -25,20 +26,19 @@ const useStyles = makeStyles({
     button:{
         color:"white"
     }
+});
 
-  });
-
-const style = {}
 
 function Header(){
     const classes = useStyles();
     const matches = useMediaQuery('(min-width:600px)');
+    let history = useHistory();
 
     return(
             <AppBar position="static" className={classes.root}>
                 <Toolbar className={classes.menu}>
-                        <LogoSmall id="logo-header" className={classes.logoHeader} style={{display: matches?"none":''}}></LogoSmall>
-                        <LogoBig style={{flex:1}} id="logo-header"  className={classes.logoHeader} style={{display: matches?'':"none"}}></LogoBig>
+                        <LogoSmall id="logo-header" onClick={() => history.push('/')} className={classes.logoHeader} style={{display: matches?"none":''}}></LogoSmall>
+                        <LogoBig style={{flex:1}} onClick={() => history.push('/')} id="logo-header"  className={classes.logoHeader} style={{display: matches?'':"none"}}></LogoBig>
                         <IconButton className={classes.button}>
                             <PublishIcon className={classes.menu} style={{fontSize:"50px"}}/>
                         </IconButton>
@@ -46,6 +46,5 @@ function Header(){
             </AppBar>
     )
 }
-
 export default Header;
 

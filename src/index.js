@@ -3,11 +3,15 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { createBrowserHistory } from 'history';
+import {Router} from "react-router-dom";
+
+const history = createBrowserHistory();
 
 ReactDOM.render(
-  <React.Fragment>
+  <Router history={history}>
     <App />
-  </React.Fragment>,
+  </Router>,
   document.getElementById('root')
 );
 

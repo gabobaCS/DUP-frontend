@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../components/Header.js';
 import Map from '../components/Map.js';
+import Scroller from '../components/Scroller.js';
 
 
 function Home(){
@@ -9,6 +10,7 @@ function Home(){
         <div>
             <Header/>
             <Map />
+            <Scroller />
 
 
         </div>
