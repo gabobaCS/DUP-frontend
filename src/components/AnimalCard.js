@@ -35,12 +35,13 @@ export default function AnimalCard(props) {
         <CardActionArea>
             <CardMedia
             className={classes.media}
-            image={props.imagen}
+            image={props.animalData.imagen_1}
             title="Contemplative Reptile"
             />
             <CardContent className={classes.text}>
               <Typography variant="body2" color="textSecondary" component="p" className={classes.mainContent}>
-              {props.descripcion_lugar}
+              {/* {props.animalData.descripcion_lugar} */}
+              {props.animalData.estado}
             </Typography>
             </CardContent>
         </CardActionArea>
@@ -48,7 +49,7 @@ export default function AnimalCard(props) {
             <Button size="small" color="primary" href="#compartir">
             Compartir
             </Button>
-            <Button size="small" color="primary" href={"animales/" + props.id}>
+            <Button size="small" color="primary" href={"animales/" + props.animalData.id}>
             Más Información
             </Button>
         </CardActions>
