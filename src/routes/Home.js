@@ -13,7 +13,7 @@ function Home(props){
             <Header/>
             <Map data={props.data}/>
             <Scroller />
-            <AnimalesDisplay />
+            <AnimalesDisplay data={props.data} />
 
 
         </div>

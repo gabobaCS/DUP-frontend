@@ -7,10 +7,11 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 345,
+    width: 345,
   },
   media: {
     height: 140,
@@ -20,38 +21,34 @@ const useStyles = makeStyles({
     lineClamp: 4,
     boxOrient: 'vertical',  
     overflow: 'hidden',
+  },
+  text:{
+    height: '92px'
   }
 });
 
 export default function AnimalCard(props) {
     const classes = useStyles();
-    console.log(props)
-
 
     return (
         <Card className={classes.root}>
         <CardActionArea>
             <CardMedia
             className={classes.media}
-            image="https://dupbackend.herokuapp.com/media/images/descarga.jfif"
+            image={props.imagen}
             title="Contemplative Reptile"
             />
-            <CardContent>
-            <Typography gutterBottom noWrap variant="h5" component="h2">
-                Lizard
-            </Typography>
-            <Typography variant="body2" color="textSecondary" component="p" className={classes.mainContent}>
-                Lizards are a widespread group of squamateeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee reptiles, with over 6,000 species, ranging
-                across all continents except Antarctica dasssssssssssssssssssssssssssssssssddddddddddddddddddddddddddddddddddddddddddddddddddd
-                sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+            <CardContent className={classes.text}>
+              <Typography variant="body2" color="textSecondary" component="p" className={classes.mainContent}>
+              {props.descripcion_lugar}
             </Typography>
             </CardContent>
         </CardActionArea>
         <CardActions>
-            <Button size="small" color="primary">
+            <Button size="small" color="primary" href="#compartir">
             Compartir
             </Button>
-            <Button size="small" color="primary">
+            <Button size="small" color="primary" href="#masinfo">
             Más Información
             </Button>
         </CardActions>

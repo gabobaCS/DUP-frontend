@@ -91,7 +91,7 @@ function Map(props) {
             zoom={15}
             onClick={showWindow && onCloseWindow}
             clickableIcons={false}
-            options={{streetViewControl: false}}
+            options={{streetViewControl: false, gestureHandling: 'greedy'}}
             > 
 
                 <Autocomplete
