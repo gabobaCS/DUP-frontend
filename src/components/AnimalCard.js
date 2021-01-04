@@ -48,7 +48,7 @@ export default function AnimalCard(props) {
             <Button size="small" color="primary" href="#compartir">
             Compartir
             </Button>
-            <Button size="small" color="primary" href="#masinfo">
+            <Button size="small" color="primary" href={"animales/" + props.id}>
             Más Información
             </Button>
         </CardActions>
