@@ -19,7 +19,6 @@ const useStyles = makeStyles({
 });
 
 export default function AnimalesDisplay(props){
-    console.log('hay: ' + props.data.length + ' animales')
     const classes = useStyles();
     const [animalesData, setAnimalesData] = useState(props.data);
     const [radioValue, setRadioValue] = useState("todo");
