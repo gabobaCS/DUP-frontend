@@ -3,6 +3,7 @@ import Header from '../components/Header.js';
 import Map from '../components/Map.js';
 import Scroller from '../components/Scroller.js';
 import AnimalesDisplay from '../components/AnimalesDisplay.js';
+import Footer from '../components/Footer.js';
 
 
 function Home(props){
@@ -14,6 +15,7 @@ function Home(props){
             <Map data={props.data}/>
             <Scroller />
             <AnimalesDisplay data={props.data} />
+            <Footer />
 
 
         </div>
