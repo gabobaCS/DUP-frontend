@@ -19,10 +19,11 @@ const useStyles = makeStyles({
 });
 
 export default function AnimalesDisplay(props){
-
+    console.log('hay: ' + props.data.length + ' animales')
     const classes = useStyles();
     const [animalesData, setAnimalesData] = useState(props.data);
-    const [radioValue, setRadioValue] = useState("todos");
+    const [radioValue, setRadioValue] = useState("todo");
+    const [currPage, setCurrPage] = useState(1);
 
     useEffect(() => {
         console.log(animalesData);
@@ -32,10 +33,20 @@ export default function AnimalesDisplay(props){
     }, [props.data]);
 
     const handleRadio = (event) => {
-        setRadioValue(event.target.value)
+        setRadioValue(event.target.value);
+        if(event.target.value != 'todo'){
+            const newAnimalesData =  props.data.filter(animal => animal.estado == event.target.value);
+            setAnimalesData(newAnimalesData);
+            setCurrPage(1);
+        }
+        else{
+            setAnimalesData(props.data);
+            setCurrPage(1);
+        }
     };
 
     const handlePageChange = (event, value) => {
+        setCurrPage(value);
         console.log(value);
     };
 
@@ -45,13 +56,13 @@ export default function AnimalesDisplay(props){
             <div style={{padding: 'none',  padding: '0 15vw', width: '100%'}}>
                 <Box display="flex" className={classes.switchBox} justifyContent="flex-end">
                     <RadioGroup aria-label="filtrar" name="filtrar-animales"  value={radioValue} onChange={handleRadio} row >
-                        <FormControlLabel  value="todos" control={<Radio/>} label="Todos" />
-                        <FormControlLabel value="perdidos" control={<Radio/>} label="Perdidos" />
-                        <FormControlLabel value="encontrados" control={<Radio />} label="Encontrados" />
+                        <FormControlLabel  value="todo" control={<Radio/>} label="Todos" />
+                        <FormControlLabel value="perdido" control={<Radio/>} label="Perdidos" />
+                        <FormControlLabel value="encontrado" control={<Radio />} label="Encontrados" />
                     </RadioGroup>
                 </Box>
                 <Grid container spacing={3}>           
-                    {animalesData != null && animalesData.map((animal) => {
+                    {animalesData != null && animalesData.slice((currPage - 1)*12, (currPage)*12).map((animal) => {
                         return(
                             <Grid key={animal.id}  item xs={12} md={4} lg={3} style={{display:'flex', justifyContent:'center'}}>
                                 <AnimalCard animalData={animal} key={animal.id}/>
@@ -61,8 +72,7 @@ export default function AnimalesDisplay(props){
                 </Grid>
                 <Box display="flex" className={classes.switchBox} justifyContent="center">
                     <Pagination 
-                    count={animalesData ? animalesData.length / 12: 1}  
-                    // count={10}
+                    count={animalesData ? Math.ceil(animalesData.length / 12): 1}  
                     onChange={handlePageChange}
                     />
                 </Box>
