@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import AnimalCard from './AnimalCard.js';
-import Switch from '@material-ui/core/Switch';
 import Box from '@material-ui/core/Box';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import FormGroup from '@material-ui/core/FormGroup';
+import { makeStyles } from '@material-ui/core/styles';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -73,6 +71,7 @@ export default function AnimalesDisplay(props){
                     <Pagination 
                     count={animalesData ? Math.ceil(animalesData.length / 12): 1}  
                     onChange={handlePageChange}
+                    page={currPage}
                     />
                 </Box>
 
