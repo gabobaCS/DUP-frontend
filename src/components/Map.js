@@ -98,7 +98,7 @@ function Map(props) {
                 onLoad={onLoadAutocomplete}
                 onPlaceChanged={onPlaceChanged}
                 >
-                    <div style={{display: 'flex', justifyContent: 'center', width:'100vw'}}>
+                    <div className='autocomplete-wrapper'>
                         <input
                         type="text"
                         className='autocomplete-input'

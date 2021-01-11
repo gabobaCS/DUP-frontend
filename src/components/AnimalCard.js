@@ -40,8 +40,8 @@ export default function AnimalCard(props) {
             />
             <CardContent className={classes.text}>
               <Typography variant="body2" color="textSecondary" component="p" className={classes.mainContent}>
-              {/* {props.animalData.descripcion_lugar} */}
-              {props.animalData.estado}
+              {props.animalData.descripcion_lugar}
+              {/* {props.animalData.estado} */}
             </Typography>
             </CardContent>
         </CardActionArea>

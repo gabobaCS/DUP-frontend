@@ -11,7 +11,7 @@ function Home(props){
 
     return(
         <div>
-            <Header/>
+            <Header disabled={false}/>
             <Map data={props.data}/>
             <Scroller />
             <AnimalesDisplay data={props.data} />
