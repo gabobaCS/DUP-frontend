@@ -37,7 +37,7 @@ function Publicar(props){
 
     return(
         <React.Fragment>
-            <Header />
+            <Header disabled={true}/>
 
             <Grid container className={classes.grid}>
                 <Grid item xs={12} md={6} className={classes.opciones}>

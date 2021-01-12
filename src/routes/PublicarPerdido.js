@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import PerdidoForm from '../components/PerdidoForm.js'
 import Box from '@material-ui/core/Box';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
@@ -56,14 +57,29 @@ function getStepContent(stepIndex) {
                 <React.Fragment>
                 <Box style={{padding: '10px'}}>
                     <Typography variant='h3'>1. Ubicación</Typography>
-                    <Typography style={{marginTop: '10px'}} variant='subtitle1'>Por favor indique la localidad en la que fue encontrado.</Typography>
+                    <Typography style={{marginTop: '10px'}} variant='subtitle1'>Por favor indique la localidad en la que fue visto por última vez.</Typography>
                 </Box>
-                <LocationStep />    
+                <LocationStep tipo='perdido' />    
                 </React.Fragment>
 
             );
         case 1:
-        return 'What is an ad group anyways?';
+        return (
+            <React.Fragment>
+            <Box style={{padding: '10px'}}>
+                <Typography variant='h3'>2. Información del Encuentro</Typography>
+                <Typography style={{marginTop: '10px'}} variant='subtitle1'>
+                    Por favor complete el siguiente formulario indicando información general sobre el animal, así como información de contacto en caso de ser encontrado.
+                </Typography>
+            </Box>
+            <Box  
+            // style={{padding: '0 40px'}}
+            >
+                <PerdidoForm/>
+            </Box>
+
+            </React.Fragment>
+        );
         case 2:
         return 'This is the bit I really care about!';
         default:
@@ -71,7 +87,7 @@ function getStepContent(stepIndex) {
     }
 }
   
-export default function Publicar() {
+export default function PublicarPerdido() {
     const classes = useStyles();
     const [activeStep, setActiveStep] = useState(0);
     const steps = getSteps();

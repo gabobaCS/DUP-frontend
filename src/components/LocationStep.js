@@ -70,7 +70,7 @@ function LocationStep(props) {
                             </div>
                         </Autocomplete>
 
-                        <Marker position={currentMarker} clickable={false} icon={YellowMarker}/>
+                        <Marker position={currentMarker} clickable={false} icon={props.tipo == 'perdido' ? RedMarker : YellowMarker}/>
                         
 
                 </GoogleMap>
