@@ -8,8 +8,7 @@ const librerias = ["places"];
 
 function LocationStep(props) {
 
-    const [center, setCenter] = useState({lat:9.041430,lng: -79.433601});
-    const [currentMarker, setCurrentMarker] = useState(center);
+    const [center, setCenter] = useState(props.location);
     const [showWindow, setShowWindow] = useState(false);
     const [autocomplete, setAutocomplete] = useState();
 
@@ -35,7 +34,8 @@ function LocationStep(props) {
     
     const onMapClick = (e) => {
         console.log(e.latLng.lat());
-        setCurrentMarker({lat: e.latLng.lat(), lng: e.latLng.lng()})
+        // setCurrentMarker({lat: e.latLng.lat(), lng: e.latLng.lng()})
+        props.setLocation({lat: e.latLng.lat(), lng: e.latLng.lng()})
     };
   
     return (
@@ -70,7 +70,7 @@ function LocationStep(props) {
                             </div>
                         </Autocomplete>
 
-                        <Marker position={currentMarker} clickable={false} icon={props.tipo == 'perdido' ? RedMarker : YellowMarker}/>
+                        <Marker position={props.location} clickable={false} icon={props.tipo == 'perdido' ? RedMarker : YellowMarker}/>
                         
 
                 </GoogleMap>

@@ -9,7 +9,8 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Header from '../components/Header.js';
 import Hidden from '@material-ui/core/Hidden';
-import LocationStep from '../components/LocationStep.js'
+import LocationStep from '../components/LocationStep.js';
+import ImageUpload from '../components/ImageUpload.js'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -50,7 +51,8 @@ function getSteps() {
     return ['Ubicación', 'Detalles del Encuentro', 'Imágenes'];
 }
 
-function getStepContent(stepIndex) {
+function getStepContent(stepIndex, chosenLocation, setChosenLocation, infoForm, setInfoForm, files, setFiles) {
+    
     switch (stepIndex) {
         case 0:
             return(
@@ -59,7 +61,7 @@ function getStepContent(stepIndex) {
                     <Typography variant='h3'>1. Ubicación</Typography>
                     <Typography style={{marginTop: '10px'}} variant='subtitle1'>Por favor indique la localidad en la que fue visto por última vez.</Typography>
                 </Box>
-                <LocationStep tipo='perdido' />    
+                <LocationStep tipo='perdido' setLocation={setChosenLocation} location={chosenLocation}/>    
                 </React.Fragment>
 
             );
@@ -72,24 +74,39 @@ function getStepContent(stepIndex) {
                     Por favor complete el siguiente formulario indicando información general sobre el animal, así como información de contacto en caso de ser encontrado.
                 </Typography>
             </Box>
-            <Box  
-            // style={{padding: '0 40px'}}
-            >
-                <PerdidoForm/>
-            </Box>
-
+                <PerdidoForm infoForm={infoForm} setInfoForm={setInfoForm}/>
             </React.Fragment>
         );
         case 2:
-        return 'This is the bit I really care about!';
+        return(
+            <React.Fragment>
+            <Box style={{padding: '10px'}}>
+                <Typography variant='h3'>3. Fotografías</Typography>
+                <Typography style={{marginTop: '10px'}} variant='subtitle1'>
+                    Por favor suba imágenes claras del animal, que permitan facilitar su búsqueda y encuentro.
+                </Typography>
+            </Box>
+                <ImageUpload files={files} setFiles={setFiles}/>
+            </React.Fragment>
+        );
         default:
         return 'Unknown stepIndex';
     }
+}
+
+const emptyForm = {
+    descripcionEncuentro: '',
+    descripcionAnimal: '',
+    especie: ''
 }
   
 export default function PublicarPerdido() {
     const classes = useStyles();
     const [activeStep, setActiveStep] = useState(0);
+    const [chosenLocation, setChosenLocation] = useState({lat: 0, lng: 0});
+    const [infoForm, setInfoForm] = useState(emptyForm);
+    const [files, setFiles] = useState([]);
+    
     const steps = getSteps();
 
     const handleNext = () => {
@@ -119,7 +136,16 @@ export default function PublicarPerdido() {
                 </Hidden>
                 <Box display='flex' justifyContent='center' alignSelf='center' style={{height: '100%'}}>
                     <div className={classes.mapTextWrapper}>
-                        <Box>{getStepContent(activeStep)}</Box>
+                        <Box>
+                            {getStepContent(
+                                activeStep,
+                                chosenLocation, 
+                                setChosenLocation,
+                                infoForm, 
+                                setInfoForm,
+                                files,
+                                setFiles)}
+                        </Box>
                         <Box className={classes.botonesWrapper}>
                                 <Box display='flex' justifyContent='space-between' className={classes.botonesControl}>
                                     <Button
