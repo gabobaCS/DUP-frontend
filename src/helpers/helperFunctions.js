@@ -1,20 +1,23 @@
-export function apiPost(imagen){
+import moment from 'moment';
+
+export function apiPost(data, history){
+                        
     const formData = new FormData();
-    formData.append("email_usuario", "gabrielbacar@gmail.com");
-    formData.append("estado", "encontrado");
-    formData.append("fecha_publicado", "2020-12-22T23:49:00Z");
-    formData.append("longitud", "41.403380");
-    formData.append("latitud", "2.174030");
+    formData.append("email_usuario", data.email);
+    formData.append("estado", data.estado);
+    formData.append("fecha_publicado", moment().format('YYYY-MM-DD HH:mm') );
+    formData.append("longitud", data.lng);
+    formData.append("latitud", data.lat);
     formData.append("fecha_perdido", "2020-12-22");
-    formData.append("descripcion_lugar", "Por multiplaza");
-    formData.append("descripcion_animal", "Raza maltes con pelaje blanco");
+    formData.append("descripcion_lugar", data.descripcionEncuentro);
+    formData.append("descripcion_animal", data.descripcionAnimal);
     formData.append("nombre_animal", "''");
-    formData.append("raza", "Maltés");
-    formData.append("microchip", 1231231231);
-    formData.append("imagen_1", imagen);
-    formData.append("nombre_contacto", "Gabriel");
-    formData.append("email_contacto", "gabrielbacar@gmail.com");
-    formData.append("numero_contacto", "62907250");
+    formData.append("raza", data.raza);
+    formData.append("microchip", data.microchip);
+    formData.append("imagen_1", data.imagenes[0]);
+    formData.append("nombre_contacto", data.nombreContacto);
+    formData.append("email_contacto", data.email);
+    formData.append("numero_contacto", data.teléfono);
 
     fetch("https://dupbackend.herokuapp.com/animales/", { 
   
@@ -32,7 +35,11 @@ export function apiPost(imagen){
     .then(response => response.json()) 
       
     // Displaying results to console 
-    .then(json => console.log(json)); 
+    .then(json => {
+        history.push('/');
+        window.location.reload();
+        console.log(json);
+    }); 
 
 }
 

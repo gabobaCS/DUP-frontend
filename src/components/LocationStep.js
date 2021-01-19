@@ -18,6 +18,40 @@ function LocationStep(props) {
         height: '100%',
     };
 
+        //Option, success, errors manejan el geolocation (obtener coordenadas del usuario).
+    var options = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0,
+    };
+
+    function success(pos) {
+        var crd = pos.coords;
+        setCenter({lat: parseFloat(crd.latitude), lng: parseFloat(crd.longitude)})
+    }
+  
+    function errors(err) {
+        console.warn(`ERROR(${err.code}): ${err.message}`);
+    }
+
+    useEffect(() => {
+        if(navigator.geolocation){
+            navigator.permissions
+            .query({ name: "geolocation" })
+            .then(function(result){
+                if (result.state === "granted") {
+                navigator.geolocation.getCurrentPosition(success);
+
+                } else if (result.state === "prompt") {
+                navigator.geolocation.getCurrentPosition(success, errors, options);
+
+                } else if (result.state === "denied") {
+                //If denied then you have to show instructions to enable location.
+                //TODO
+                }
+            })
+        }   
+    }, []);
 
     const onLoadAutocomplete = useCallback(autocomplete => {
         setAutocomplete(autocomplete);

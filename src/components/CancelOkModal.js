@@ -20,7 +20,7 @@ export default function CancelOkModal(props) {
     return (
       <div>
         <Dialog
-          open={props.defaultOpen}
+          open={props.open}
           onClose={props.handleClose}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
@@ -28,14 +28,14 @@ export default function CancelOkModal(props) {
           <DialogTitle id="alert-dialog-title">{props.title}</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-                La imagen elegida será eliminada de la selección.
+                {props.message}
             </DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button onClick={props.handleClose} color="primary">
               Cancelar
             </Button>
-            <Button onClick={props.handleClose} color="primary" autoFocus>
+            <Button onClick={props.handleOk} color="primary" autoFocus>
               Ok
             </Button>
           </DialogActions>

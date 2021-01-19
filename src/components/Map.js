@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { GoogleMap, LoadScript, InfoWindow, Marker, Autocomplete } from '@react-google-maps/api';
-import roomRed from '../icons/roomRed2.png';
-import roomYellow from '../icons/roomYellow2.png';
+import roomRed from '../icons/RedMarker.png';
+import roomYellow from '../icons/YellowMarker.png';
 import './Map.css';
 
 const librerias = ["places"];

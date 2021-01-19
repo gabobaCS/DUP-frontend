@@ -9,8 +9,12 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Header from '../components/Header.js';
 import Hidden from '@material-ui/core/Hidden';
+import PublicarTitle from '../components/PublicarTitle.js'
 import LocationStep from '../components/LocationStep.js';
-import ImageUpload from '../components/ImageUpload.js'
+import ImageUpload from '../components/ImageUpload.js';
+import {apiPost} from '../helpers/helperFunctions.js';
+import { useHistory } from "react-router-dom";
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -57,47 +61,51 @@ function getStepContent(stepIndex, chosenLocation, setChosenLocation, infoForm, 
         case 0:
             return(
                 <React.Fragment>
-                <Box style={{padding: '10px'}}>
-                    <Typography variant='h3'>1. Ubicación</Typography>
-                    <Typography style={{marginTop: '10px'}} variant='subtitle1'>Por favor indique la localidad en la que fue visto por última vez.</Typography>
-                </Box>
-                <LocationStep tipo='perdido' setLocation={setChosenLocation} location={chosenLocation}/>    
+                    <PublicarTitle 
+                        title='1. Ubicación'
+                        subtitle='Por favor indique la localidad en la que fue visto por última vez.'
+                    /> 
+                    <LocationStep tipo='perdido' setLocation={setChosenLocation} location={chosenLocation}/>    
                 </React.Fragment>
 
             );
         case 1:
         return (
             <React.Fragment>
-            <Box style={{padding: '10px'}}>
-                <Typography variant='h3'>2. Información del Encuentro</Typography>
-                <Typography style={{marginTop: '10px'}} variant='subtitle1'>
-                    Por favor complete el siguiente formulario indicando información general sobre el animal, así como información de contacto en caso de ser encontrado.
-                </Typography>
-            </Box>
+                <PublicarTitle 
+                    title='2. Información del Encuentro'
+                    subtitle='Por favor complete el siguiente formulario indicando información general sobre el animal, así como información de contacto en caso de ser encontrado.'
+                />             
                 <PerdidoForm infoForm={infoForm} setInfoForm={setInfoForm}/>
             </React.Fragment>
         );
         case 2:
         return(
             <React.Fragment>
-            <Box style={{padding: '10px'}}>
-                <Typography variant='h3'>3. Fotografías</Typography>
-                <Typography style={{marginTop: '10px'}} variant='subtitle1'>
-                    Por favor suba imágenes claras del animal, que permitan facilitar su búsqueda y encuentro.
-                </Typography>
-            </Box>
+                <PublicarTitle 
+                    title='3. Fotografías'
+                    subtitle='Por favor suba imágenes claras del animal, que permitan facilitar su búsqueda y encuentro.'
+                /> 
                 <ImageUpload files={files} setFiles={setFiles}/>
             </React.Fragment>
         );
         default:
-        return 'Unknown stepIndex';
+        return 'Página no encontrada';
     }
 }
 
 const emptyForm = {
     descripcionEncuentro: '',
     descripcionAnimal: '',
-    especie: ''
+    especie: '',
+    raza: '',
+    microchip: '',
+    especie: '',
+    nombreAnimal: '',
+    nombreContacto: '',
+    email: '',
+    telefono: '',
+
 }
   
 export default function PublicarPerdido() {
@@ -106,11 +114,59 @@ export default function PublicarPerdido() {
     const [chosenLocation, setChosenLocation] = useState({lat: 0, lng: 0});
     const [infoForm, setInfoForm] = useState(emptyForm);
     const [files, setFiles] = useState([]);
+
+    let history = useHistory();
+
+    //Option, success, errors manejan el geolocation (obtener coordenadas del usuario).
+    var options = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0,
+    };
+
+    function success(pos) {
+        var crd = pos.coords;
+        setChosenLocation({lat: parseFloat(crd.latitude), lng: parseFloat(crd.longitude)})
+    }
+    
+    function errors(err) {
+        console.warn(`ERROR(${err.code}): ${err.message}`);
+    }
+
+    useEffect(() => {
+        if(navigator.geolocation){
+            navigator.permissions
+            .query({ name: "geolocation" })
+            .then(function(result){
+                if (result.state === "granted") {
+                navigator.geolocation.getCurrentPosition(success);
+
+                } else if (result.state === "prompt") {
+                navigator.geolocation.getCurrentPosition(success, errors, options);
+
+                } else if (result.state === "denied") {
+                //If denied then you have to show instructions to enable location.
+                //TODO
+                }
+            })
+        }   
+    }, []);
     
     const steps = getSteps();
 
+    const formValidation = () => {
+        
+    }
+
     const handleNext = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        if(activeStep === steps.length - 1){
+            // apiPost({...infoForm, ...chosenLocation, imagenes: files, estado: 'perdido'}, history);
+            // history.push('/');
+        }
+        else{
+            setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        }
+
     };
 
     const handleBack = () => {
@@ -162,7 +218,6 @@ export default function PublicarPerdido() {
                         </Box>
                     </div>
                 </Box>
-
             </div>
         </React.Fragment>
 

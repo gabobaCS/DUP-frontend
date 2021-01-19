@@ -52,7 +52,7 @@ const rejectStyle = {
 
 export default function ImageUpload(props) {
     const classes = useStyles();
-    const [showCancelOKModal, setShowCancelOkModal] = useState(false);
+    const [cancelOKModal, setCancelOkModal] = useState({open: false});
     const [warningModal, setWarningModal] = useState({open: false});
     const [imageKeys, setImageKeys] = useState(0);
 
@@ -84,10 +84,8 @@ export default function ImageUpload(props) {
     ]);
 
     // const closeModal = () => setShowModal(false);
-    const handleOkWarningModal = () => setWarningModal({...warningModal, open: false})
-
-    
-
+    const handleOkWarningModal = () => setWarningModal({...warningModal, open: false});
+  
     function handleOnDrop(acceptedFiles){
       if (props.files.length + acceptedFiles.length > 5){
         setWarningModal({...warningModal, open: true, message: 'Sólo se permiten 5 imágenes.'});
@@ -122,12 +120,23 @@ export default function ImageUpload(props) {
       }
     }
 
-    function handleImageClick(event){
-      console.log('attribute: ' + event.target.getAttribute('id'))
-      for (var i = 0; i < props.files.length; i++){
-        console.log(props.files[i])
+    const handleCancelOnModal = () => setCancelOkModal({...cancelOKModal, open: false})
+    function handleOkOnModal(){
+      if (cancelOKModal.action == 'delete-image'){
+        props.setFiles(props.files.filter(file => parseInt(file.key) !== parseInt(cancelOKModal.targetId)));
+        handleCancelOnModal();
       }
-      props.setFiles(props.files.filter(file => parseInt(file.key) !== parseInt(event.currentTarget.getAttribute('id'))))
+
+    }
+    function handleImageClick(event){
+      setCancelOkModal({
+        open: true, 
+        title: 'Eliminar Imagen', 
+        message: 'La imagen elegida será eliminada de la selección.',
+        action: 'delete-image',
+        targetId: event.currentTarget.getAttribute('id')
+      })
+      
     }
 
     
@@ -147,7 +156,13 @@ export default function ImageUpload(props) {
     return (
       <React.Fragment>
         <WarningModal open={warningModal.open} message={warningModal.message} handleClose={handleOkWarningModal}/>
-        {/* <CancelOkModal defaultOpen={''} title='Eliminar Imagen' handleClose={''} /> */}
+        <CancelOkModal 
+          open={cancelOKModal.open} 
+          title={cancelOKModal.title} 
+          message={cancelOKModal.message}
+          handleClose={handleCancelOnModal}
+          handleOk ={handleOkOnModal} 
+        />
         <div style={styles.container}>
           <div {...getRootProps({style})}>
             <input {...getInputProps()} />

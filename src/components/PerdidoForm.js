@@ -85,6 +85,7 @@ export default function EncuentroForm(props) {
                         id="microchip"
                         name="microchip"
                         label="Número de Microchip"
+                        type='number'
                         value={props.infoForm.microchip}
                         onChange={handleChange}
                         fullWidth

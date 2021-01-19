@@ -29,7 +29,6 @@ export default function AnimalesDisplay(props){
     const [currPage, setCurrPage] = useState(1);
 
     useEffect(() => {
-        console.log(animalesData);
         if (props.data) {
           setAnimalesData(props.data);
         }
@@ -50,7 +49,6 @@ export default function AnimalesDisplay(props){
 
     const handlePageChange = (event, value) => {
         setCurrPage(value);
-        console.log(value);
     };
 
     const titleFormatter = (radioValue) => {
