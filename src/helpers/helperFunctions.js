@@ -40,7 +40,11 @@ export function apiPost(data, history){
         window.location.reload();
         console.log(json);
     }); 
+}
 
+export function emailChecker(email){
+    var re = /\S+@\S+\.\S+/;
+    return re.test(email);
 }
 
 // import * as helpers from '../helpers/helperFunctions.js';

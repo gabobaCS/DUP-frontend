@@ -35,6 +35,7 @@ export default function EncuentroForm(props) {
                 <Grid item xs={12}>
                 <TextField
                     required
+                    error={props.formErrors.descripcionEncuentro}
                     id="descripcionEncuentro"
                     name="descripcionEncuentro"
                     label="Último lugar donde fue visto"
@@ -46,6 +47,7 @@ export default function EncuentroForm(props) {
                 <Grid item xs={12}>
                 <TextField
                     required
+                    error={props.formErrors.descripcionAnimal}
                     id="descripcionAnimal"
                     name="descripcionAnimal"
                     label="Descripción del animal"
@@ -55,7 +57,7 @@ export default function EncuentroForm(props) {
                 />
                 </Grid>
                 <Grid item xs={12} sm={4}>
-                    <FormControl fullWidth required>
+                    <FormControl fullWidth required error={props.formErrors.especie}>
                         <InputLabel id="especie">Especie</InputLabel>
                             <Select
                             name='especie'
@@ -107,6 +109,7 @@ export default function EncuentroForm(props) {
                 <Grid item xs={12} sm={6}>
                     <TextField
                         required
+                        error={props.formErrors.nombreContacto}
                         id="nombreContacto"
                         name="nombreContacto"
                         label="Nombre completo"
@@ -118,6 +121,7 @@ export default function EncuentroForm(props) {
                 <Grid item xs={12} sm={6}>
                     <TextField
                         required
+                        error={props.formErrors.email}
                         id="email"
                         name="email"
                         label="Email"
@@ -130,9 +134,11 @@ export default function EncuentroForm(props) {
                 <Grid item xs={12} sm={6}>
                     <TextField
                         required
+                        error={props.formErrors.telefono}
                         id="telefono"
                         name="telefono"
                         label="Número de teléfono"
+                        type="tel"
                         value={props.infoForm.telefono}
                         onChange={handleChange}
                         fullWidth

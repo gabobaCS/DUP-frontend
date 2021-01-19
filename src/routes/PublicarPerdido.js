@@ -12,8 +12,9 @@ import Hidden from '@material-ui/core/Hidden';
 import PublicarTitle from '../components/PublicarTitle.js'
 import LocationStep from '../components/LocationStep.js';
 import ImageUpload from '../components/ImageUpload.js';
-import {apiPost} from '../helpers/helperFunctions.js';
+import {apiPost, emailChecker} from '../helpers/helperFunctions.js';
 import { useHistory } from "react-router-dom";
+import WarningModal from '../components/WarningModal.js';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -55,7 +56,7 @@ function getSteps() {
     return ['Ubicación', 'Detalles del Encuentro', 'Imágenes'];
 }
 
-function getStepContent(stepIndex, chosenLocation, setChosenLocation, infoForm, setInfoForm, files, setFiles) {
+function getStepContent(stepIndex, chosenLocation, setChosenLocation, infoForm, setInfoForm, formErrors, files, setFiles) {
     
     switch (stepIndex) {
         case 0:
@@ -76,7 +77,7 @@ function getStepContent(stepIndex, chosenLocation, setChosenLocation, infoForm, 
                     title='2. Información del Encuentro'
                     subtitle='Por favor complete el siguiente formulario indicando información general sobre el animal, así como información de contacto en caso de ser encontrado.'
                 />             
-                <PerdidoForm infoForm={infoForm} setInfoForm={setInfoForm}/>
+                <PerdidoForm infoForm={infoForm} setInfoForm={setInfoForm} formErrors={formErrors}/>
             </React.Fragment>
         );
         case 2:
@@ -114,6 +115,9 @@ export default function PublicarPerdido() {
     const [chosenLocation, setChosenLocation] = useState({lat: 0, lng: 0});
     const [infoForm, setInfoForm] = useState(emptyForm);
     const [files, setFiles] = useState([]);
+    const [warningModal, setWarningModal] = useState({open: false});
+    const [formErrors, setFormErrors] = useState({});
+
 
     let history = useHistory();
 
@@ -154,13 +158,46 @@ export default function PublicarPerdido() {
     
     const steps = getSteps();
 
-    const formValidation = () => {
-        
+    const handleOkWarningModal = () => setWarningModal({...warningModal, open: false});
+
+    const formValidation = (dataToSend) => {
+
+        let errorValues = {}
+
+        if (!emailChecker(dataToSend.email)){
+            console.log('email no valido');
+            errorValues['email'] = true;
+            setActiveStep(1);
+        }
+
+        if (dataToSend.imagenes.length == 0){
+            setWarningModal({
+                message: 'Debe haber al menos una foto.', 
+                open: true
+            });
+            setActiveStep(2);
+        }
+
+        for (let key in dataToSend){
+            if (!Boolean(dataToSend[key]) && !(key === 'raza' || key === 'nombreAnimal' || key === 'microchip')){
+                console.log(key)
+                setWarningModal({
+                    message: 'Todos los campos obligatorios deben estar llenos.', 
+                    open: true
+                });
+                errorValues[key] = true;
+                setActiveStep(1);
+            }
+        }
+
+        setFormErrors(errorValues);
     }
 
     const handleNext = () => {
         if(activeStep === steps.length - 1){
-            // apiPost({...infoForm, ...chosenLocation, imagenes: files, estado: 'perdido'}, history);
+            const dataToSend =  {...infoForm, ...chosenLocation, imagenes: files, estado: 'perdido'};
+            formValidation(dataToSend)
+            // apiPost(dataToSend, history);
             // history.push('/');
         }
         else{
@@ -179,6 +216,7 @@ export default function PublicarPerdido() {
 
     return (
         <React.Fragment>
+            <WarningModal open={warningModal.open} message={warningModal.message} handleClose={handleOkWarningModal}/>
             <Header disabled={true}/>
             <div className={classes.root} >
                 <Hidden xsDown={true}>
@@ -199,6 +237,7 @@ export default function PublicarPerdido() {
                                 setChosenLocation,
                                 infoForm, 
                                 setInfoForm,
+                                formErrors,
                                 files,
                                 setFiles)}
                         </Box>
