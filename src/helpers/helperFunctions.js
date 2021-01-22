@@ -1,5 +1,6 @@
 import moment from 'moment';
 
+//API POST call.
 export function apiPost(data, history){
                         
     const formData = new FormData();
@@ -46,6 +47,50 @@ export function emailChecker(email){
     var re = /\S+@\S+\.\S+/;
     return re.test(email);
 }
+
+//Getting user Geolocation.
+export function getUserGeolocation(setLocation){
+
+    var options = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0,
+    };
+    
+    function success(pos) {
+        var crd = pos.coords;
+        setLocation({lat: parseFloat(crd.latitude), lng: parseFloat(crd.longitude)});
+        
+    }
+    
+    function errors(err) {
+        console.warn(`ERROR(${err.code}): ${err.message}`);
+    }
+    
+    if(navigator.geolocation){
+        navigator.permissions
+        .query({ name: "geolocation" })
+        .then(function(result){
+            if (result.state === "granted") {
+                navigator.geolocation.getCurrentPosition(success);
+
+            } else if (result.state === "prompt") {
+                navigator.geolocation.getCurrentPosition(success, errors, options);
+
+            } else if (result.state === "denied") {
+                setLocation({lat: 8.983333, lng: -79.516670})
+            //If denied then you have to show instructions to enable location.
+            //TODO
+            }
+        })
+    }
+    
+  
+    
+
+}
+
+
 
 // import * as helpers from '../helpers/helperFunctions.js';
 // import { makeStyles } from '@material-ui/core/styles';

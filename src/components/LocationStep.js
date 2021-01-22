@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { GoogleMap, LoadScript,  Autocomplete, Marker } from '@react-google-maps/api';
 import './LocationStep.css';
-import RedMarker from '../icons/RedMarker.png'
-import YellowMarker from '../icons/YellowMarker.png'
+import RedMarker from '../icons/RedMarker.png';
+import YellowMarker from '../icons/YellowMarker.png';
+import {apiPost, emailChecker, getUserGeolocation} from '../helpers/helperFunctions.js';
 
 const librerias = ["places"];
 
 function LocationStep(props) {
 
     const [center, setCenter] = useState(props.location);
-    const [showWindow, setShowWindow] = useState(false);
     const [autocomplete, setAutocomplete] = useState();
 
     //Usado para el Mapa.
@@ -18,40 +18,15 @@ function LocationStep(props) {
         height: '100%',
     };
 
-        //Option, success, errors manejan el geolocation (obtener coordenadas del usuario).
-    var options = {
-        enableHighAccuracy: true,
-        timeout: 5000,
-        maximumAge: 0,
-    };
-
-    function success(pos) {
-        var crd = pos.coords;
-        setCenter({lat: parseFloat(crd.latitude), lng: parseFloat(crd.longitude)})
-    }
-  
-    function errors(err) {
-        console.warn(`ERROR(${err.code}): ${err.message}`);
-    }
-
+ 
     useEffect(() => {
-        if(navigator.geolocation){
-            navigator.permissions
-            .query({ name: "geolocation" })
-            .then(function(result){
-                if (result.state === "granted") {
-                navigator.geolocation.getCurrentPosition(success);
+        if (!center){
+            getUserGeolocation((userLocation) => {setCenter(userLocation); props.setLocation(userLocation)});
+        }
 
-                } else if (result.state === "prompt") {
-                navigator.geolocation.getCurrentPosition(success, errors, options);
-
-                } else if (result.state === "denied") {
-                //If denied then you have to show instructions to enable location.
-                //TODO
-                }
-            })
-        }   
     }, []);
+
+
 
     const onLoadAutocomplete = useCallback(autocomplete => {
         setAutocomplete(autocomplete);
@@ -68,14 +43,14 @@ function LocationStep(props) {
     
     const onMapClick = (e) => {
         console.log(e.latLng.lat());
-        // setCurrentMarker({lat: e.latLng.lat(), lng: e.latLng.lng()})
         props.setLocation({lat: e.latLng.lat(), lng: e.latLng.lng()})
     };
-  
+    
+
     return (
         <LoadScript
             googleMapsApiKey='' 
-            // googleMapsApiKey={process.env.REACT_APP_API_MAPS_KEY}
+            googleMapsApiKey={process.env.REACT_APP_API_MAPS_KEY}
             libraries={librerias}
         >
             <div className='mapaLocationStep'>

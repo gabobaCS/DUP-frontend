@@ -12,10 +12,11 @@ import Hidden from '@material-ui/core/Hidden';
 import PublicarTitle from '../components/PublicarTitle.js'
 import LocationStep from '../components/LocationStep.js';
 import ImageUpload from '../components/ImageUpload.js';
-import {apiPost, emailChecker} from '../helpers/helperFunctions.js';
+import {apiPost, emailChecker, getUserGeolocation} from '../helpers/helperFunctions.js';
 import { useHistory } from "react-router-dom";
 import WarningModal from '../components/WarningModal.js';
-import {formValidation} from '../helpers/publicarAux.js';
+import {formValidation, emptyForm, } from '../helpers/publicarAux.js';
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -49,15 +50,13 @@ const useStyles = makeStyles((theme) => ({
         paddingRight: theme.spacing(2),
         flex: 1,
     }
-
-
 }));
   
 function getSteps() {
     return ['Ubicación', 'Detalles del Encuentro', 'Imágenes'];
 }
 
-function getStepContent(stepIndex, chosenLocation, setChosenLocation, infoForm, setInfoForm, formErrors, files, setFiles) {
+function getStepContent(stepIndex, states) {
     
     switch (stepIndex) {
         case 0:
@@ -67,7 +66,7 @@ function getStepContent(stepIndex, chosenLocation, setChosenLocation, infoForm, 
                         title='1. Ubicación'
                         subtitle='Por favor indique la localidad en la que fue visto por última vez.'
                     /> 
-                    <LocationStep tipo='perdido' setLocation={setChosenLocation} location={chosenLocation}/>    
+                    <LocationStep tipo='perdido' setLocation={states.setChosenLocation} location={states.chosenLocation}/>    
                 </React.Fragment>
 
             );
@@ -78,7 +77,7 @@ function getStepContent(stepIndex, chosenLocation, setChosenLocation, infoForm, 
                     title='2. Información del Encuentro'
                     subtitle='Por favor complete el siguiente formulario indicando información general sobre el animal, así como información de contacto en caso de ser encontrado.'
                 />             
-                <PerdidoForm infoForm={infoForm} setInfoForm={setInfoForm} formErrors={formErrors}/>
+                <PerdidoForm infoForm={states.infoForm} setInfoForm={states.setInfoForm} formErrors={states.formErrors}/>
             </React.Fragment>
         );
         case 2:
@@ -88,7 +87,7 @@ function getStepContent(stepIndex, chosenLocation, setChosenLocation, infoForm, 
                     title='3. Fotografías'
                     subtitle='Por favor suba imágenes claras del animal, que permitan facilitar su búsqueda y encuentro.'
                 /> 
-                <ImageUpload files={files} setFiles={setFiles}/>
+                <ImageUpload files={states.files} setFiles={states.setFiles}/>
             </React.Fragment>
         );
         default:
@@ -96,24 +95,12 @@ function getStepContent(stepIndex, chosenLocation, setChosenLocation, infoForm, 
     }
 }
 
-const emptyForm = {
-    descripcionEncuentro: '',
-    descripcionAnimal: '',
-    especie: '',
-    raza: '',
-    microchip: '',
-    especie: '',
-    nombreAnimal: '',
-    nombreContacto: '',
-    email: '',
-    telefono: '',
 
-}
   
 export default function PublicarPerdido() {
     const classes = useStyles();
     const [activeStep, setActiveStep] = useState(0);
-    const [chosenLocation, setChosenLocation] = useState({lat: 0, lng: 0});
+    const [chosenLocation, setChosenLocation] = useState();
     const [infoForm, setInfoForm] = useState(emptyForm);
     const [files, setFiles] = useState([]);
     const [warningModal, setWarningModal] = useState({open: false});
@@ -122,7 +109,7 @@ export default function PublicarPerdido() {
 
     let history = useHistory();
 
-    //Option, success, errors manejan el geolocation (obtener coordenadas del usuario).
+
     var options = {
         enableHighAccuracy: true,
         timeout: 5000,
@@ -139,22 +126,7 @@ export default function PublicarPerdido() {
     }
 
     useEffect(() => {
-        if(navigator.geolocation){
-            navigator.permissions
-            .query({ name: "geolocation" })
-            .then(function(result){
-                if (result.state === "granted") {
-                navigator.geolocation.getCurrentPosition(success);
 
-                } else if (result.state === "prompt") {
-                navigator.geolocation.getCurrentPosition(success, errors, options);
-
-                } else if (result.state === "denied") {
-                //If denied then you have to show instructions to enable location.
-                //TODO
-                }
-            })
-        }   
     }, []);
     
     const steps = getSteps();
@@ -178,10 +150,6 @@ export default function PublicarPerdido() {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
 
-    const handleReset = () => {
-        setActiveStep(0);
-    };
-
     return (
         <React.Fragment>
             <WarningModal open={warningModal.open} message={warningModal.message} handleClose={handleOkWarningModal}/>
@@ -201,13 +169,16 @@ export default function PublicarPerdido() {
                         <Box>
                             {getStepContent(
                                 activeStep,
-                                chosenLocation, 
-                                setChosenLocation,
-                                infoForm, 
-                                setInfoForm,
-                                formErrors,
-                                files,
-                                setFiles)}
+                                {
+                                    chosenLocation: chosenLocation, 
+                                    'setChosenLocation': setChosenLocation,
+                                    infoForm: infoForm, 
+                                    setInfoForm: setInfoForm,
+                                    formErrors: formErrors,
+                                    files: files,
+                                    setFiles: setFiles
+                                }
+                            )}
                         </Box>
                         <Box className={classes.botonesWrapper}>
                                 <Box display='flex' justifyContent='space-between' className={classes.botonesControl}>

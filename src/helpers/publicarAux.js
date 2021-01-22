@@ -37,3 +37,17 @@ export const formValidation = (dataToSend, setActiveStep, setWarningModal, setFo
 
     setFormErrors(errorValues);
 }
+
+export const emptyForm = {
+    descripcionEncuentro: '',
+    descripcionAnimal: '',
+    especie: '',
+    raza: '',
+    microchip: '',
+    especie: '',
+    nombreAnimal: '',
+    nombreContacto: '',
+    email: '',
+    telefono: '',
+
+}
