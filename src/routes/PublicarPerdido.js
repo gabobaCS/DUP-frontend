@@ -15,6 +15,7 @@ import ImageUpload from '../components/ImageUpload.js';
 import {apiPost, emailChecker} from '../helpers/helperFunctions.js';
 import { useHistory } from "react-router-dom";
 import WarningModal from '../components/WarningModal.js';
+import {formValidation} from '../helpers/publicarAux.js';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -160,43 +161,10 @@ export default function PublicarPerdido() {
 
     const handleOkWarningModal = () => setWarningModal({...warningModal, open: false});
 
-    const formValidation = (dataToSend) => {
-
-        let errorValues = {}
-
-        if (!emailChecker(dataToSend.email)){
-            console.log('email no valido');
-            errorValues['email'] = true;
-            setActiveStep(1);
-        }
-
-        if (dataToSend.imagenes.length == 0){
-            setWarningModal({
-                message: 'Debe haber al menos una foto.', 
-                open: true
-            });
-            setActiveStep(2);
-        }
-
-        for (let key in dataToSend){
-            if (!Boolean(dataToSend[key]) && !(key === 'raza' || key === 'nombreAnimal' || key === 'microchip')){
-                console.log(key)
-                setWarningModal({
-                    message: 'Todos los campos obligatorios deben estar llenos.', 
-                    open: true
-                });
-                errorValues[key] = true;
-                setActiveStep(1);
-            }
-        }
-
-        setFormErrors(errorValues);
-    }
-
     const handleNext = () => {
         if(activeStep === steps.length - 1){
             const dataToSend =  {...infoForm, ...chosenLocation, imagenes: files, estado: 'perdido'};
-            formValidation(dataToSend)
+            formValidation(dataToSend, setActiveStep, setWarningModal, setFormErrors);
             // apiPost(dataToSend, history);
             // history.push('/');
         }
