@@ -138,6 +138,7 @@ export default function PublicarPerdido() {
             const dataToSend =  {...infoForm, ...chosenLocation, imagenes: files, estado: 'perdido'};
             formValidation(dataToSend, setActiveStep, setWarningModal, setFormErrors);
             // apiPost(dataToSend, history);
+            console.log(dataToSend)
             // history.push('/');
         }
         else{

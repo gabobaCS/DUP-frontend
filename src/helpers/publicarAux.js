@@ -24,16 +24,25 @@ export const formValidation = (dataToSend, setActiveStep, setWarningModal, setFo
 
 
     for (let key in dataToSend){
-        if (!Boolean(dataToSend[key]) && !(key === 'raza' || key === 'nombreAnimal' || key === 'microchip')){
+        if (!Boolean(dataToSend[key]) && !(key === 'raza' || key === 'nombreAnimal' || key === 'microchip' || key === 'informacionAdicional')){
             console.log(key)
             setWarningModal({
-                message: 'Todos los campos obligatorios deben estar llenos.', 
+                message: 'Todos los campos obligatorios deben estar llenos correctamente.', 
                 open: true
             });
             errorValues[key] = true;
             setActiveStep(1);
         }
     }
+
+    if(!dataToSend.pais.nombre){
+        errorValues['pais'] = true;
+        setWarningModal({
+            message: 'Todos los campos obligatorios deben estar llenos correctamente.', 
+            open: true
+        });
+    }
+ 
 
     setFormErrors(errorValues);
 }
@@ -46,8 +55,9 @@ export const emptyForm = {
     microchip: '',
     especie: '',
     nombreAnimal: '',
+    informacionAdicional: '',
     nombreContacto: '',
     email: '',
     telefono: '',
-
+    pais:  {"nombre":"","name":"","nom":"","iso2":"","iso3":"","phone_code":""} 
 }

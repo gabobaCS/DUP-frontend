@@ -8,7 +8,7 @@ import {apiPost, emailChecker, getUserGeolocation} from '../helpers/helperFuncti
 const librerias = ["places"];
 
 function LocationStep(props) {
-
+    
     const [center, setCenter] = useState(props.location);
     const [autocomplete, setAutocomplete] = useState();
 
@@ -17,7 +17,6 @@ function LocationStep(props) {
         width: '100%',
         height: '100%',
     };
-
  
     useEffect(() => {
         if (!center){
@@ -25,8 +24,6 @@ function LocationStep(props) {
         }
 
     }, []);
-
-
 
     const onLoadAutocomplete = useCallback(autocomplete => {
         setAutocomplete(autocomplete);
@@ -50,7 +47,7 @@ function LocationStep(props) {
     return (
         <LoadScript
             googleMapsApiKey='' 
-            googleMapsApiKey={process.env.REACT_APP_API_MAPS_KEY}
+            // googleMapsApiKey={process.env.REACT_APP_API_MAPS_KEY}
             libraries={librerias}
         >
             <div className='mapaLocationStep'>
@@ -78,10 +75,7 @@ function LocationStep(props) {
                                     />
                             </div>
                         </Autocomplete>
-
-                        <Marker position={props.location} clickable={false} icon={props.tipo == 'perdido' ? RedMarker : YellowMarker}/>
-                        
-
+                        <Marker position={props.location} clickable={false} icon={props.tipo == 'perdido' ? RedMarker : YellowMarker}/>                 
                 </GoogleMap>
             </div>
         </LoadScript>

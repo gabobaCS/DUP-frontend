@@ -83,11 +83,7 @@ export function getUserGeolocation(setLocation){
             //TODO
             }
         })
-    }
-    
-  
-    
-
+    } 
 }
 
 

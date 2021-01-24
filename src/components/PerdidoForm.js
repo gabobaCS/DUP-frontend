@@ -11,6 +11,7 @@ import Select from '@material-ui/core/Select';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Grid from '@material-ui/core/Grid';
+import CountrySelect from '../components/CountrySelect.js'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -26,6 +27,11 @@ export default function EncuentroForm(props) {
   const handleChange = (event) => {
     props.setInfoForm({...props.infoForm, [event.target.name]: event.target.value})
   };
+
+  const handleAutocompete = (event, newValue) => {
+      props.setInfoForm({...props.infoForm, pais: newValue});
+      console.log(newValue)
+  }
 
   return (
         <Box border={1} p={3} paddingBottom={6} borderRadius={5} borderColor="grey.400" className={classes.root}>
@@ -102,6 +108,15 @@ export default function EncuentroForm(props) {
                         onChange={handleChange} 
                         fullWidth />
                 </Grid>
+                <Grid item xs={12} sm={6}>
+                    <TextField 
+                        id="informacionAdicional" 
+                        name="informacionAdicional" 
+                        label="Información Adicional"
+                        value={props.infoForm.informacionAdicional}
+                        onChange={handleChange} 
+                        fullWidth />
+                </Grid>
             </Grid>
             <Typography variant='h6' style={{ fontWeight: 600, marginBottom: '10px', marginTop: '25px' }} paragraph>Información de Contacto</Typography>
             <Typography paragraph style={{marginBottom: '10px'}}>En caso de que el animal sea encontrado, provea información que permita contactarlo. </Typography>
@@ -143,6 +158,9 @@ export default function EncuentroForm(props) {
                         onChange={handleChange}
                         fullWidth
                     />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <CountrySelect value={props.infoForm.pais} handleChange={handleAutocompete} error={props.formErrors.pais}/>
                 </Grid>
             </Grid>                       
         </Box>
