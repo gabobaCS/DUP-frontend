@@ -15,7 +15,9 @@ import ImageUpload from '../components/ImageUpload.js';
 import {apiPost, emailChecker, getUserGeolocation} from '../helpers/helperFunctions.js';
 import { useHistory } from "react-router-dom";
 import WarningModal from '../components/WarningModal.js';
-import {formValidation, emptyForm, } from '../helpers/publicarAux.js';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import SendModal from '../components/SendModal.js';
+import {getStepContent, formValidation, emptyForm, getSteps} from '../helpers/publicarAux';
 
 
 
@@ -52,51 +54,6 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
   
-function getSteps() {
-    return ['Ubicación', 'Detalles del Encuentro', 'Imágenes'];
-}
-
-function getStepContent(stepIndex, states) {
-    
-    switch (stepIndex) {
-        case 0:
-            return(
-                <React.Fragment>
-                    <PublicarTitle 
-                        title='1. Ubicación'
-                        subtitle='Por favor indique la localidad en la que fue visto por última vez.'
-                    /> 
-                    <LocationStep tipo='perdido' setLocation={states.setChosenLocation} location={states.chosenLocation}/>    
-                </React.Fragment>
-
-            );
-        case 1:
-        return (
-            <React.Fragment>
-                <PublicarTitle 
-                    title='2. Información del Encuentro'
-                    subtitle='Por favor complete el siguiente formulario indicando información general sobre el animal, así como información de contacto en caso de ser encontrado.'
-                />             
-                <PerdidoForm infoForm={states.infoForm} setInfoForm={states.setInfoForm} formErrors={states.formErrors}/>
-            </React.Fragment>
-        );
-        case 2:
-        return(
-            <React.Fragment>
-                <PublicarTitle 
-                    title='3. Fotografías'
-                    subtitle='Por favor suba imágenes claras del animal, que permitan facilitar su búsqueda y encuentro.'
-                /> 
-                <ImageUpload files={states.files} setFiles={states.setFiles}/>
-            </React.Fragment>
-        );
-        default:
-        return 'Página no encontrada';
-    }
-}
-
-
-  
 export default function PublicarPerdido() {
     const classes = useStyles();
     const [activeStep, setActiveStep] = useState(0);
@@ -105,30 +62,11 @@ export default function PublicarPerdido() {
     const [files, setFiles] = useState([]);
     const [warningModal, setWarningModal] = useState({open: false});
     const [formErrors, setFormErrors] = useState({});
+    const [sendData, setSendData] = useState({open: false});
 
 
     let history = useHistory();
-
-
-    var options = {
-        enableHighAccuracy: true,
-        timeout: 5000,
-        maximumAge: 0,
-    };
-
-    function success(pos) {
-        var crd = pos.coords;
-        setChosenLocation({lat: parseFloat(crd.latitude), lng: parseFloat(crd.longitude)})
-    }
-    
-    function errors(err) {
-        console.warn(`ERROR(${err.code}): ${err.message}`);
-    }
-
-    useEffect(() => {
-
-    }, []);
-    
+   
     const steps = getSteps();
 
     const handleOkWarningModal = () => setWarningModal({...warningModal, open: false});
@@ -136,9 +74,15 @@ export default function PublicarPerdido() {
     const handleNext = () => {
         if(activeStep === steps.length - 1){
             const dataToSend =  {...infoForm, ...chosenLocation, imagenes: files, estado: 'perdido'};
-            formValidation(dataToSend, setActiveStep, setWarningModal, setFormErrors);
+            const formValid = formValidation(dataToSend, setActiveStep, setWarningModal, setFormErrors);
             // apiPost(dataToSend, history);
-            console.log(dataToSend)
+            // setActiveStep((prevActiveStep) => prevActiveStep + 1)
+            console.log('send data? ' + formValid)
+
+            if(formValid){
+                setSendData({open: true, data: dataToSend})
+            }
+
             // history.push('/');
         }
         else{
@@ -168,6 +112,7 @@ export default function PublicarPerdido() {
                 <Box display='flex' justifyContent='center' alignSelf='center' style={{height: '100%'}}>
                     <div className={classes.mapTextWrapper}>
                         <Box>
+                            <SendModal open={sendData.open} data={sendData.data}/>
                             {getStepContent(
                                 activeStep,
                                 {
@@ -177,7 +122,7 @@ export default function PublicarPerdido() {
                                     setInfoForm: setInfoForm,
                                     formErrors: formErrors,
                                     files: files,
-                                    setFiles: setFiles
+                                    setFiles: setFiles,
                                 }
                             )}
                         </Box>

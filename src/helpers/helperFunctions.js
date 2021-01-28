@@ -1,7 +1,7 @@
 import moment from 'moment';
 
 //API POST call.
-export function apiPost(data, history){
+export async function apiPost(data, successResponse){
                         
     const formData = new FormData();
     formData.append("email_usuario", data.email);
@@ -15,12 +15,20 @@ export function apiPost(data, history){
     formData.append("nombre_animal", "''");
     formData.append("raza", data.raza);
     formData.append("microchip", data.microchip);
-    formData.append("imagen_1", data.imagenes[0]);
+    // formData.append("imagen_1", data.imagenes[0]);
+    // formData.append("imagen_2", data.imagenes[1]);
+    // formData.append("imagen_3", data.imagenes[2]);
+    // formData.append("imagen_4", data.imagenes[3]);
+    // formData.append("imagen_5", data.imagenes[4]);
+    for (let i = 0; i < data.imagenes.length; i++){
+        formData.append("imagen_"+ (i+1), data.imagenes[i])
+    }
     formData.append("nombre_contacto", data.nombreContacto);
     formData.append("email_contacto", data.email);
     formData.append("numero_contacto", data.teléfono);
+    formData.append("pais", data.pais);
 
-    fetch("https://dupbackend.herokuapp.com/animales/", { 
+    let res = await fetch("https://dupbackend.herokuapp.com/animales/", { 
   
         // Adding method type 
         method: "POST", 
@@ -31,16 +39,24 @@ export function apiPost(data, history){
         // Adding headers to the request 
 
     }) 
-      
+
+     
     // Converting to JSON 
-    .then(response => response.json()) 
-      
-    // Displaying results to console 
-    .then(json => {
-        history.push('/');
-        window.location.reload();
-        console.log(json);
-    }); 
+    .then(response => {
+        console.log(response.status)
+        if (response.status == 201){
+            successResponse(true);
+        }
+        else{
+            setTimeout(window.location.reload(), 3000)
+            alert('Ha sucedido un error');
+
+        }
+
+    }) 
+    
+
+
 }
 
 export function emailChecker(email){
@@ -86,45 +102,3 @@ export function getUserGeolocation(setLocation){
     } 
 }
 
-
-
-// import * as helpers from '../helpers/helperFunctions.js';
-// import { makeStyles } from '@material-ui/core/styles';
-// import Button from '@material-ui/core/Button';
-// import IconButton from '@material-ui/core/IconButton';
-// import PhotoCamera from '@material-ui/icons/PhotoCamera';
-
-// const useStyles = makeStyles((theme) => ({
-//   root: {
-//     '& > *': {
-//       margin: theme.spacing(1),
-//     },
-//   },
-//   input: {
-//     display: 'none',
-//   },
-// }));
-// Form de Imagen
-{/* <div className={classes.root}>
-<input accept="image/*" className={classes.input} id="icon-button-file" type="file" onChange={handleChange} />
-<label htmlFor="icon-button-file">
-    <IconButton color="primary" aria-label="upload picture" component="span">
-    <PhotoCamera />
-    </IconButton>
-</label>
-</div> */}
-
-// export default function UploadButtons() {
-//     const classes = useStyles();
-//     const [imagen, setImagen] = useState();
-
-//     const handleChange = (event) => {
-//         console.log(event.target.files);
-//         helpers.apiPost(event.target.files[0])
-//         setImagen(event.target.files[0]);
-//       };
-
-//     return (
-
-//     );
-// }

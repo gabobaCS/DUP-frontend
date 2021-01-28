@@ -5,10 +5,14 @@ import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
 import Header from '../components/Header.js';
 import Hidden from '@material-ui/core/Hidden';
-import LocationStep from '../components/LocationStep.js'
+import { useHistory } from "react-router-dom";
+import WarningModal from '../components/WarningModal.js';
+import SendModal from '../components/SendModal.js';
+import {getStepContent, formValidation, emptyForm, getSteps} from '../helpers/publicarAux';
+
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -41,55 +45,52 @@ const useStyles = makeStyles((theme) => ({
         paddingRight: theme.spacing(2),
         flex: 1,
     }
-
-
 }));
   
-function getSteps() {
-    return ['Ubicación', 'Detalles del Encuentro', 'Imágenes'];
-}
-
-function getStepContent(stepIndex) {
-    switch (stepIndex) {
-        case 0:
-            return(
-                <React.Fragment>
-                    <Box style={{padding: '10px'}}>
-                        <Typography variant='h3'>1. Ubicación</Typography>
-                        <Typography style={{marginTop: '10px'}} variant='subtitle1'>Por favor indique la localidad en la que fue encontrado.</Typography>
-                    </Box>
-                    <LocationStep tipo='encontrado' />    
-                </React.Fragment>
-
-            );
-        case 1:
-        return 'What is an ad group anyways?';
-        case 2:
-        return 'This is the bit I really care about!';
-        default:
-        return 'Unknown stepIndex';
-    }
-}
-  
-export default function PublicarEncontrado() {
+export default function PublicarPerdido() {
     const classes = useStyles();
     const [activeStep, setActiveStep] = useState(0);
+    const [chosenLocation, setChosenLocation] = useState();
+    const [infoForm, setInfoForm] = useState(emptyForm);
+    const [files, setFiles] = useState([]);
+    const [warningModal, setWarningModal] = useState({open: false});
+    const [formErrors, setFormErrors] = useState({});
+    const [sendData, setSendData] = useState({open: false});
+
+
+    let history = useHistory();
+   
     const steps = getSteps();
 
+    const handleOkWarningModal = () => setWarningModal({...warningModal, open: false});
+
     const handleNext = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        if(activeStep === steps.length - 1){
+            const dataToSend =  {...infoForm, ...chosenLocation, imagenes: files, estado: 'perdido'};
+            const formValid = formValidation(dataToSend, setActiveStep, setWarningModal, setFormErrors);
+            // apiPost(dataToSend, history);
+            // setActiveStep((prevActiveStep) => prevActiveStep + 1)
+            console.log('send data? ' + formValid)
+
+            if(formValid){
+                setSendData({open: true, data: dataToSend})
+            }
+
+            // history.push('/');
+        }
+        else{
+            setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        }
+
     };
 
     const handleBack = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
 
-    const handleReset = () => {
-        setActiveStep(0);
-    };
-
     return (
         <React.Fragment>
+            <WarningModal open={warningModal.open} message={warningModal.message} handleClose={handleOkWarningModal}/>
             <Header disabled={true}/>
             <div className={classes.root} >
                 <Hidden xsDown={true}>
@@ -103,7 +104,21 @@ export default function PublicarEncontrado() {
                 </Hidden>
                 <Box display='flex' justifyContent='center' alignSelf='center' style={{height: '100%'}}>
                     <div className={classes.mapTextWrapper}>
-                        <Box>{getStepContent(activeStep)}</Box>
+                        <Box>
+                            <SendModal open={sendData.open} data={sendData.data}/>
+                            {getStepContent(
+                                activeStep,
+                                {
+                                    chosenLocation: chosenLocation, 
+                                    'setChosenLocation': setChosenLocation,
+                                    infoForm: infoForm, 
+                                    setInfoForm: setInfoForm,
+                                    formErrors: formErrors,
+                                    files: files,
+                                    setFiles: setFiles,
+                                }
+                            )}
+                        </Box>
                         <Box className={classes.botonesWrapper}>
                                 <Box display='flex' justifyContent='space-between' className={classes.botonesControl}>
                                     <Button
@@ -120,7 +135,6 @@ export default function PublicarEncontrado() {
                         </Box>
                     </div>
                 </Box>
-
             </div>
         </React.Fragment>
 
