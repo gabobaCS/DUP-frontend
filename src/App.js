@@ -7,7 +7,10 @@ import {
 } from "react-router-dom";
 import Home  from './routes/Home.js';
 import AnimalInfo from './routes/AnimalInfo.js';
-import NoEncontrado from './routes/NoEncontrado.js'
+import NoEncontrado from './routes/NoEncontrado.js';
+import Publicar from './routes/Publicar.js';
+import PublicarEncontrado from './routes/PublicarEncontrado.js';
+import PublicarPerdido from './routes/PublicarPerdido.js';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
@@ -46,6 +49,15 @@ function App() {
           </Route>
           <Route exact path="/animales/:id">
             <AnimalInfo />
+          </Route>
+          <Route exact path="/publicar">
+            <Publicar />
+          </Route>
+          <Route exact path="/publicar/encontrado">
+            <PublicarEncontrado />
+          </Route>
+          <Route exact path="/publicar/perdido">
+            <PublicarPerdido />
           </Route>
           <Route path="*">
             <NoEncontrado />

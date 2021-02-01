@@ -7,6 +7,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Pagination from '@material-ui/lab/Pagination';
+import Typography from '@material-ui/core/Typography';
 
 
 const useStyles = makeStyles({
@@ -14,6 +15,11 @@ const useStyles = makeStyles({
       width: '100%',
       margin: '30px 0'
     },
+    title:{
+        textAlign: 'center',
+        margin: '50px 0',
+        color: '#777474'
+    }
 });
 
 export default function AnimalesDisplay(props){
@@ -23,7 +29,6 @@ export default function AnimalesDisplay(props){
     const [currPage, setCurrPage] = useState(1);
 
     useEffect(() => {
-        console.log(animalesData);
         if (props.data) {
           setAnimalesData(props.data);
         }
@@ -44,8 +49,16 @@ export default function AnimalesDisplay(props){
 
     const handlePageChange = (event, value) => {
         setCurrPage(value);
-        console.log(value);
     };
+
+    const titleFormatter = (radioValue) => {
+        switch(radioValue){
+            case 'todo': return 'perdidos y encontrados';
+            case 'perdido': return 'perdidos';
+            case 'encontrado': return 'encontrados';
+            default: return 'perdidos y encontrados';
+        }
+    } 
 
 
     return (
@@ -58,7 +71,11 @@ export default function AnimalesDisplay(props){
                         <FormControlLabel value="encontrado" control={<Radio />} label="Encontrados" />
                     </RadioGroup>
                 </Box>
-                <Grid container spacing={3}>           
+                <Typography variant='h4' className={classes.title} >
+                    Animales < b> {titleFormatter(radioValue)} </b> por el área:
+                </Typography>
+                <Grid container spacing={3}>       
+                    
                     {animalesData != null && animalesData.slice((currPage - 1)*12, (currPage)*12).map((animal) => {
                         return(
                             <Grid key={animal.id}  item xs={12} md={4} lg={3} style={{display:'flex', justifyContent:'center'}}>
