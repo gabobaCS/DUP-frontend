@@ -31,28 +31,28 @@ export default function AnimalCard(props) {
     const classes = useStyles();
 
     return (
-        <Card className={classes.root}>
-        <CardActionArea>
-            <CardMedia
-            className={classes.media}
-            image={props.animalData.imagen_1}
-            title="Contemplative Reptile"
-            />
-            <CardContent className={classes.text}>
-              <Typography variant="body2" color="textSecondary" component="p" className={classes.mainContent}>
-              {props.animalData.descripcion_lugar}
-              {/* {props.animalData.estado} */}
-            </Typography>
-            </CardContent>
-        </CardActionArea>
-        <CardActions>
-            <Button size="small" color="primary" href="#compartir">
-            Compartir
-            </Button>
-            <Button size="small" color="primary" href={"animales/" + props.animalData.id}>
-            Más Información
-            </Button>
-        </CardActions>
+        <Card style={props.width? {width:props.width} : {width: 345}}>
+          <CardActionArea>
+              <CardMedia
+              className={classes.media}
+              image={props.animalData.imagen_1}
+              title="Contemplative Reptile"
+              />
+              <CardContent className={classes.text}>
+                <Typography variant="body2" color="textSecondary" component="p" className={classes.mainContent}>
+                {props.animalData.descripcion_lugar}
+                {/* {props.animalData.estado} */}
+              </Typography>
+              </CardContent>
+          </CardActionArea>
+          <CardActions>
+              <Button size="small" color="primary" href="#compartir">
+              Compartir
+              </Button>
+              <Button size="small" color="primary" href={"animales/" + props.animalData.id}>
+              Más Información
+              </Button>
+          </CardActions>
         </Card>
     );
 }

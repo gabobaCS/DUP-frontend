@@ -16,6 +16,9 @@
     text-overflow: ellipses;
     position: relative;
 }
+.infoWindow{
+    width: 100px;
+}
 
 @media (min-width: 960px) {
     .autocomplete-input{

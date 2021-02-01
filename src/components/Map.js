@@ -3,6 +3,8 @@ import { GoogleMap, LoadScript, InfoWindow, Marker, Autocomplete } from '@react-
 import roomRed from '../icons/RedMarker.png';
 import roomYellow from '../icons/YellowMarker.png';
 import './Map.css';
+import AnimalCard from './AnimalCard.js';
+import Grid from '@material-ui/core/Grid';
 
 const librerias = ["places"];
 
@@ -118,11 +120,10 @@ function Map(props) {
                         {showWindow && currentMarker && animal.id == currentMarker.id && 
                             <InfoWindow
                             onCloseClick={onCloseWindow}
+             
                             >
-                                <div >
-                                <h1>{animal.descripcion_lugar}</h1>
-                                <img src={animal.imagen_1} style={{width:'200px',height:'200px'}}></img>
-                                </div>
+                                <AnimalCard animalData={animal} width='250px'/>
+    
                             </InfoWindow>
                         }            
                     </Marker>        

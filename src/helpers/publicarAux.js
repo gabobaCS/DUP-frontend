@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import PerdidoForm from '../components/PerdidoForm.js'
+import PerdidoForm from '../components/PerdidoForm.js';
+import EncontradoForm from '../components/EncontradoForm.js';
 import PublicarTitle from '../components/PublicarTitle.js'
 import ImageUpload from '../components/ImageUpload.js';
 import LocationStep from '../components/LocationStep.js';
@@ -10,7 +11,7 @@ export function getSteps() {
     return ['Ubicación', 'Detalles del Encuentro', 'Imágenes'];
 }
 
-export function getStepContent(stepIndex, states) {
+export function getStepContentPerdido(stepIndex, states) {
     
     switch (stepIndex) {
         case 0:
@@ -32,6 +33,51 @@ export function getStepContent(stepIndex, states) {
                     subtitle='Por favor complete el siguiente formulario indicando información general sobre el animal, así como información de contacto en caso de ser encontrado.'
                 />             
                 <PerdidoForm infoForm={states.infoForm} setInfoForm={states.setInfoForm} formErrors={states.formErrors}/>
+            </React.Fragment>
+        );
+        case 2:
+        return(
+            <React.Fragment>
+                <PublicarTitle 
+                    title='3. Fotografías'
+                    subtitle='Por favor suba imágenes claras del animal, que permitan facilitar su búsqueda y encuentro.'
+                /> 
+                <ImageUpload files={states.files} setFiles={states.setFiles}/>
+            </React.Fragment>
+        );
+        case 3:
+            return(
+                <React.Fragment>
+
+                </React.Fragment>
+            );
+        default:
+        return 'Página no encontrada';
+    }
+}
+
+export function getStepContentEncontrado(stepIndex, states) {
+    
+    switch (stepIndex) {
+        case 0:
+            return(
+                <React.Fragment>
+                    <PublicarTitle 
+                        title='1. Ubicación'
+                        subtitle='Por favor indique la localidad en la que fue encontrado.'
+                    /> 
+                    <LocationStep tipo='encontrado' setLocation={states.setChosenLocation} location={states.chosenLocation}/>    
+                </React.Fragment>
+
+            );
+        case 1:
+        return (
+            <React.Fragment>
+                <PublicarTitle 
+                    title='2. Información del Encuentro'
+                    subtitle='Por favor complete el siguiente formulario indicando información general sobre el animal, así como información de contacto en caso de ser encontrado.'
+                />             
+                <EncontradoForm infoForm={states.infoForm} setInfoForm={states.setInfoForm} formErrors={states.formErrors}/>
             </React.Fragment>
         );
         case 2:

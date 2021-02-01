@@ -17,7 +17,7 @@ import { useHistory } from "react-router-dom";
 import WarningModal from '../components/WarningModal.js';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import SendModal from '../components/SendModal.js';
-import {getStepContent, formValidation, emptyForm, getSteps} from '../helpers/publicarAux';
+import {getStepContentPerdido, formValidation, emptyForm, getSteps} from '../helpers/publicarAux';
 
 
 
@@ -75,15 +75,11 @@ export default function PublicarPerdido() {
         if(activeStep === steps.length - 1){
             const dataToSend =  {...infoForm, ...chosenLocation, imagenes: files, estado: 'perdido'};
             const formValid = formValidation(dataToSend, setActiveStep, setWarningModal, setFormErrors);
-            // apiPost(dataToSend, history);
-            // setActiveStep((prevActiveStep) => prevActiveStep + 1)
             console.log('send data? ' + formValid)
 
             if(formValid){
                 setSendData({open: true, data: dataToSend})
             }
-
-            // history.push('/');
         }
         else{
             setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -98,7 +94,7 @@ export default function PublicarPerdido() {
     return (
         <React.Fragment>
             <WarningModal open={warningModal.open} message={warningModal.message} handleClose={handleOkWarningModal}/>
-            <Header disabled={true}/>
+            <Header/>
             <div className={classes.root} >
                 <Hidden xsDown={true}>
                     <Stepper style={{backgroundColor: '#fafafa', display: 'none'}}  activeStep={activeStep} alternativeLabel >
@@ -113,7 +109,7 @@ export default function PublicarPerdido() {
                     <div className={classes.mapTextWrapper}>
                         <Box>
                             <SendModal open={sendData.open} data={sendData.data}/>
-                            {getStepContent(
+                            {getStepContentPerdido(
                                 activeStep,
                                 {
                                     chosenLocation: chosenLocation, 

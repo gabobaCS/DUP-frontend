@@ -10,7 +10,7 @@ import Hidden from '@material-ui/core/Hidden';
 import { useHistory } from "react-router-dom";
 import WarningModal from '../components/WarningModal.js';
 import SendModal from '../components/SendModal.js';
-import {getStepContent, formValidation, emptyForm, getSteps} from '../helpers/publicarAux';
+import {getStepContentEncontrado, formValidation, emptyForm, getSteps} from '../helpers/publicarAux';
 
 
 
@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
   
-export default function PublicarPerdido() {
+export default function PublicarEncontrado() {
     const classes = useStyles();
     const [activeStep, setActiveStep] = useState(0);
     const [chosenLocation, setChosenLocation] = useState();
@@ -66,11 +66,8 @@ export default function PublicarPerdido() {
 
     const handleNext = () => {
         if(activeStep === steps.length - 1){
-            const dataToSend =  {...infoForm, ...chosenLocation, imagenes: files, estado: 'perdido'};
+            const dataToSend =  {...infoForm, ...chosenLocation, imagenes: files, estado: 'encontrado'};
             const formValid = formValidation(dataToSend, setActiveStep, setWarningModal, setFormErrors);
-            // apiPost(dataToSend, history);
-            // setActiveStep((prevActiveStep) => prevActiveStep + 1)
-            console.log('send data? ' + formValid)
 
             if(formValid){
                 setSendData({open: true, data: dataToSend})
@@ -91,7 +88,7 @@ export default function PublicarPerdido() {
     return (
         <React.Fragment>
             <WarningModal open={warningModal.open} message={warningModal.message} handleClose={handleOkWarningModal}/>
-            <Header disabled={true}/>
+            <Header/>
             <div className={classes.root} >
                 <Hidden xsDown={true}>
                     <Stepper style={{backgroundColor: '#fafafa', display: 'none'}}  activeStep={activeStep} alternativeLabel >
@@ -106,7 +103,7 @@ export default function PublicarPerdido() {
                     <div className={classes.mapTextWrapper}>
                         <Box>
                             <SendModal open={sendData.open} data={sendData.data}/>
-                            {getStepContent(
+                            {getStepContentEncontrado(
                                 activeStep,
                                 {
                                     chosenLocation: chosenLocation, 
