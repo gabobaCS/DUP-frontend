@@ -7,12 +7,13 @@ import Footer from '../components/Footer.js';
 
 
 function Home(props){
+    const [mapCenter, setMapCenter] = useState({lat:9.041430,lng: -79.433601});
     console.log(props)
 
     return(
         <div>
             <Header disabled={false}/>
-            <Map data={props.data}/>
+            <Map data={props.data} setCenter={setMapCenter}/>
             <Scroller />
             <AnimalesDisplay data={props.data} />
             <Footer />
