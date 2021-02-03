@@ -64,7 +64,7 @@ export function emailChecker(email){
     return re.test(email);
 }
 
-//Getting user Geolocation.
+//Getting user Geolocation. Receives setLocation, a function that receives a lat lng object.
 export function getUserGeolocation(setLocation){
 
     var options = {

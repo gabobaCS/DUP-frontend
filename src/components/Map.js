@@ -5,6 +5,7 @@ import roomYellow from '../icons/YellowMarker.png';
 import './Map.css';
 import AnimalCard from './AnimalCard.js';
 import Grid from '@material-ui/core/Grid';
+import {getUserGeolocation} from '../helpers/helperFunctions.js';
 
 const librerias = ["places"];
 
@@ -22,38 +23,43 @@ function Map(props) {
     };
 
     //Option, success, errors manejan el geolocation (obtener coordenadas del usuario).
-    var options = {
-        enableHighAccuracy: true,
-        timeout: 5000,
-        maximumAge: 0,
-    };
+    // var options = {
+    //     enableHighAccuracy: true,
+    //     timeout: 5000,
+    //     maximumAge: 0,
+    // };
 
-    function success(pos) {
-        var crd = pos.coords;
-        setCenter({lat: parseFloat(crd.latitude), lng: parseFloat(crd.longitude)})
-    }
+    // function success(pos) {
+    //     var crd = pos.coords;
+    //     setCenter({lat: parseFloat(crd.latitude), lng: parseFloat(crd.longitude)})
+    // }
   
-    function errors(err) {
-        console.warn(`ERROR(${err.code}): ${err.message}`);
-    }
+    // function errors(err) {
+    //     console.warn(`ERROR(${err.code}): ${err.message}`);
+    // }
+
+    // useEffect(() => {
+    //     if(navigator.geolocation){
+    //         navigator.permissions
+    //         .query({ name: "geolocation" })
+    //         .then(function(result){
+    //             if (result.state === "granted") {
+    //             navigator.geolocation.getCurrentPosition(success);
+
+    //             } else if (result.state === "prompt") {
+    //             navigator.geolocation.getCurrentPosition(success, errors, options);
+
+    //             } else if (result.state === "denied") {
+    //             //If denied then you have to show instructions to enable location.
+    //             //TODO
+    //             }
+    //         })
+    //     }   
+    // }, []);
 
     useEffect(() => {
-        if(navigator.geolocation){
-            navigator.permissions
-            .query({ name: "geolocation" })
-            .then(function(result){
-                if (result.state === "granted") {
-                navigator.geolocation.getCurrentPosition(success);
+            getUserGeolocation((userLocation) => {props.setCenter(userLocation)});
 
-                } else if (result.state === "prompt") {
-                navigator.geolocation.getCurrentPosition(success, errors, options);
-
-                } else if (result.state === "denied") {
-                //If denied then you have to show instructions to enable location.
-                //TODO
-                }
-            })
-        }   
     }, []);
 
     const onClickMarker = animal => e => {
@@ -74,7 +80,7 @@ function Map(props) {
     const onPlaceChanged = useCallback(() => {
         console.log(autocomplete.getPlace().geometry.location.lat());
         console.log(autocomplete.getPlace().geometry.location.lng());
-        setCenter({
+        props.setCenter({
         lat:autocomplete.getPlace().geometry.location.lat(),
         lng: autocomplete.getPlace().geometry.location.lng()
         })
@@ -83,13 +89,13 @@ function Map(props) {
     return (
         <LoadScript
           googleMapsApiKey='' 
-        // googleMapsApiKey={process.env.REACT_APP_API_MAPS_KEY}
+        googleMapsApiKey={process.env.REACT_APP_API_MAPS_KEY}
         libraries={librerias}
         >
 
             <GoogleMap
             mapContainerStyle={containerStyle}
-            center={center}
+            center={props.center}
             zoom={15}
             onClick={showWindow && onCloseWindow}
             clickableIcons={false}

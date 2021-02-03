@@ -28,7 +28,7 @@ const theme = createMuiTheme({
 });
 
 function App() {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     fetch('https://dupbackend.herokuapp.com/animales', {method: 'GET'})
