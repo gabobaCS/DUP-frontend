@@ -88,9 +88,9 @@ function Map(props) {
   
     return (
         <LoadScript
-          googleMapsApiKey='' 
-        googleMapsApiKey={process.env.REACT_APP_API_MAPS_KEY}
-        libraries={librerias}
+            googleMapsApiKey='' 
+            // googleMapsApiKey={process.env.REACT_APP_API_MAPS_KEY}
+            libraries={librerias}
         >
 
             <GoogleMap

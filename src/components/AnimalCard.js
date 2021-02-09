@@ -32,7 +32,7 @@ export default function AnimalCard(props) {
 
     return (
         <Card style={props.width? {width:props.width} : {width: 345}}>
-          <CardActionArea>
+          <CardActionArea onClick={()=> console.log('click')}>
               <CardMedia
               className={classes.media}
               image={props.animalData.imagen_1}
@@ -41,7 +41,6 @@ export default function AnimalCard(props) {
               <CardContent className={classes.text}>
                 <Typography variant="body2" color="textSecondary" component="p" className={classes.mainContent}>
                 {props.animalData.descripcion_lugar}
-                {/* {props.animalData.estado} */}
               </Typography>
               </CardContent>
           </CardActionArea>
