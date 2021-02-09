@@ -8,6 +8,9 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import {
+  Link,
+} from "react-router-dom";
 
 const useStyles = makeStyles({
   root: {
@@ -24,7 +27,8 @@ const useStyles = makeStyles({
   },
   text:{
     height: '92px'
-  }
+  },
+
 });
 
 export default function AnimalCard(props) {
@@ -33,24 +37,33 @@ export default function AnimalCard(props) {
     return (
         <Card style={props.width? {width:props.width} : {width: 345}}>
           <CardActionArea onClick={()=> console.log('click')}>
+            <Link to={'animales/' + props.animalData.id}>
               <CardMedia
-              className={classes.media}
-              image={props.animalData.imagen_1}
-              title="Contemplative Reptile"
-              />
-              <CardContent className={classes.text}>
-                <Typography variant="body2" color="textSecondary" component="p" className={classes.mainContent}>
-                {props.animalData.descripcion_lugar}
-              </Typography>
-              </CardContent>
+                className={classes.media}
+                image={props.animalData.imagen_1}
+                title="Contemplative Reptile"
+                />
+                <CardContent className={classes.text}>
+                  <Typography variant="body2" color="textSecondary" component="p" className={classes.mainContent}>
+                  {props.animalData.descripcion_lugar}
+                </Typography>
+                </CardContent>
+            </Link>
+
           </CardActionArea>
           <CardActions>
               <Button size="small" color="primary" href="#compartir">
               Compartir
               </Button>
-              <Button size="small" color="primary" href={"animales/" + props.animalData.id}>
-              Más Información
-              </Button>
+              <Link to={'animales/' + props.animalData.id} style={{ textDecoration: 'none' }}>
+                <Button size="small" color="primary">
+
+                    Más Información
+
+                </Button>
+                </Link>
+
+
           </CardActions>
         </Card>
     );

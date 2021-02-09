@@ -36,8 +36,8 @@ function App() {
     .then((data) => {
       setData(data);
     })
-
   }, []);
+
 
   return (
     <React.Fragment>
@@ -48,7 +48,7 @@ function App() {
             <Home data={data}/>
           </Route>
           <Route exact path="/animales/:id">
-            <AnimalInfo />
+            <AnimalInfo data={data}/>
           </Route>
           <Route exact path="/publicar">
             <Publicar />
