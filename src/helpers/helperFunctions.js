@@ -26,7 +26,7 @@ export async function apiPost(data, successResponse){
     formData.append("nombre_contacto", data.nombreContacto);
     formData.append("email_contacto", data.email);
     formData.append("numero_contacto", data.teléfono);
-    formData.append("pais", data.pais);
+    formData.append("pais", data.pais.nombre);
 
     let res = await fetch("https://dupbackend.herokuapp.com/animales/", { 
   

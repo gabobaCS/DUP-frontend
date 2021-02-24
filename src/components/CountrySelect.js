@@ -15,6 +15,7 @@ const useStyles = makeStyles({
 });
 
 export default function CountrySelect(props) {
+  console.log(props)
   const classes = useStyles();
   const [inputValue, setInputValue] = useState(props.value.nombre);
 

@@ -29,8 +29,11 @@ export default function EncuentroForm(props) {
   };
 
   const handleAutocompete = (event, newValue) => {
-      props.setInfoForm({...props.infoForm, pais: newValue});
-      console.log(newValue)
+    if (newValue){
+        props.setInfoForm({...props.infoForm, pais: newValue});
+        console.log(newValue)        
+    } 
+
   }
 
   return (

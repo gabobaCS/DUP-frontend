@@ -11,6 +11,7 @@ import Header from '../components/Header.js';
 import PerdidoEncontradoBanner from '../components/PerdidoEncontradoBanner.js';
 import ImageCarousel from '../components/ImageCarousel.js';
 import Typography from '@material-ui/core/Typography';
+import {formatBulletInfo} from '../helpers/animalInfoHelper.js'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -18,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
       flexGrow: 1,
       backgroundColor: 'white',
       color: '#777777',
+      fontSize: '25px'
     },
     grid:{
         width: '100%'
@@ -40,13 +42,7 @@ function formatImages(animalData){
     return images;
 }
 
-function formatBulletInfo(title, info){
-    return(
-        <Box display='flex'>
-            <Typography variant="subtitle1"> Nombre</Typography>
-        </Box>
-    )
-}
+
 
 export default function AnimalInfo(props){
     let { id } = useParams();
@@ -91,11 +87,13 @@ export default function AnimalInfo(props){
                 </Grid>
 
                 <Grid item xs={12} sm={6}>
-                <Box display='flex'>
-                    <Typography variant="subtitle1" style={{fontWeight: 100, marginRight: '3px'}}> Nombre: </Typography>
-                    <Typography variant="subtitle1" style={{fontWeight: 600}}> Ruby </Typography>
-                </Box>
-                
+                    <Box display='flex' alignItems='center' justifyContent='center'>
+                    {formatBulletInfo(animalData)}   
+                    </Box>             
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+             
                 </Grid>
 
                 
